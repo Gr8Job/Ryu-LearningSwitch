@@ -1,0 +1,26 @@
+1. Run the Ryu app
+save the Learning_Switch_13.py app file in the path "/home/ryu/ryu/ryu/app"
+$ cd ~
+$ cd ryu
+$ sudo ryu-manager --verbose ryu.app.learning_switch_13
+
+
+2. Run the mininet switch (open a new ssh session)
+save the custom topology file topo-3sw-6host.py in the path "/home/mininet/custom"
+$ sudo mn --custom ~/mininet/custom/topo-3sw-6host.py --topo mytopo --mac --switch ovsk --controller remote -x
+
+3. Configure the switches to use openflow version 1.3
+open a new ssh session to control the switch behaviour
+
+$ sudo ovs-vsctl set Bridge s1 protocols=OpenFlow13
+$ sudo ovs-vsctl set Bridge s2 protocols=OpenFlow13
+$ sudo ovs-vsctl set Bridge s3 protocols=OpenFlow13
+
+you could check or delete flow tables using below commands
+
+$ sudo ovs-ofctl -O openflow13 dump-flows s1
+$ sudo ovs-ofctl -O openflow13 del-flows s1
+
+4. From the mininet window ping between different hosts & realize the controller logs:
+
+mininet> h1 ping h3
